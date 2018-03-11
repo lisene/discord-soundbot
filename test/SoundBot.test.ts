@@ -1,7 +1,7 @@
 import fs from 'fs';
 import Discord from 'discord.js';
 
-import { token } from '../config/config.json'
+import { token, game } from '../config/config.json'
 import SoundBot from  '../src/SoundBot';
 import MessageHandler from '../src/MessageHandler';
 
@@ -39,6 +39,17 @@ describe('SoundBot', () => {
     it('registers message listeners', () => {
       bot.emit('message');
       expect((bot as any).messageHandler.handle).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('#setActivity', () => {
+    beforeEach(() => {
+      bot.user = jasmine.createSpyObj('user', ['setActivity']);
+    });
+
+    it('sets activity', () => {
+      (bot as any).setActivity();
+      expect(bot.user.setActivity).toHaveBeenCalledWith(game);
     });
   });
 
