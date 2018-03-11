@@ -3,6 +3,7 @@ import Discord from 'discord.js';
 
 import { token } from '../config/config.json'
 import SoundBot from  '../src/SoundBot';
+import MessageHandler from '../src/MessageHandler';
 
 describe('SoundBot', () => {
   let bot: SoundBot;
@@ -19,6 +20,25 @@ describe('SoundBot', () => {
     it('starts the bot', () => {
       bot.start();
       expect(bot.login).toHaveBeenCalledWith(token);
+    });
+  });
+
+  describe('#addEventListeners', () => {
+    beforeEach(() => {
+      spyOn((bot as any), 'setActivity');
+      spyOn((bot as any), 'setAvatar');
+      (bot as any).messageHandler = jasmine.createSpyObj('MessageHandler', ['handle']);
+    });
+
+    it('registers ready listeners', () => {
+      bot.emit('ready');
+      expect((bot as any).setActivity).toHaveBeenCalledTimes(1);
+      expect((bot as any).setAvatar).toHaveBeenCalledTimes(1);
+    });
+
+    it('registers message listeners', () => {
+      bot.emit('message');
+      expect((bot as any).messageHandler.handle).toHaveBeenCalledTimes(1);
     });
   });
 
