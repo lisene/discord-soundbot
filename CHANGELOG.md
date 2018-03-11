@@ -3,6 +3,7 @@
 + Removed `config` dependency
 + Sanitize sound names
 + Moved to TypeScript
++ Added specs
 
 ## 0.13.0 (2018-03-07)
 
